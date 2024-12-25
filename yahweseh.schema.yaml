@@ -1,0 +1,209 @@
+# Rime schema
+# encoding: utf-8
+
+schema:
+  schema_id: yahweseh
+  name: 吳語協會式上海吳語輸入方案
+  version: "2024.08.01"
+  author:
+     - Cathaylab             <goetiansoc@proton.me>
+     - Yuanhao nhyoeghau' Chen ‹nyoeghau@nyoeghau.com›
+   
+  description: |
+    上海閒話
+    拼寫方案採用吳語協會式
+    http://wu-chinese.com/romanization/
+    http://wu-chinese.com/minidict/
+  dependencies:
+    - luna_pinyin
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [中文, 西文]
+  - name: full_shape
+    reset: 0
+    states: [半角, 全角]
+  - name: extended_charset
+    reset: 1
+    states: [通用, 增廣]
+  - name: ascii_punct
+    reset: 0
+    states: [。，, ．，]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - affix_segmentor@luna_pinyin
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - script_translator
+    - script_translator@luna_pinyin
+  filters:
+    - uniquifier
+    - reverse_lookup_filter@yahweseh_reverse_lookup
+
+speller:
+  alphabet: ";zyxwvutsrqponmlkjihgfedcba"
+  delimiter: " '"
+  algebra:
+    - xform/'/;/
+    - xform/\d+$//
+
+    - abbrev/^([a-z]).+$/$1/
+    - abbrev/^(([ptsck]|ts)h).+$/$1/
+    - abbrev/^(ts).+$/$1/
+    - abbrev/^(ny).+$/$1/
+    - abbrev/^(ng).+$/$1/
+    - abbrev/^(gh).+$/$1/
+
+    # 新派口音
+    - derive/^tsi/ci/
+    - derive/^tshi/chi/
+    - derive/^tshi/qi/
+    - derive/^si/shi/
+    - derive/^si/xi/
+    - derive/^zi/ji/
+    # - derive/ah$/eh/
+    # - derive/eh$/ah/
+    # - derive/ioh$/iuih/
+    # - derive/iuih$/ioh/
+    - derive/ae$/e/ # 模糊“蘭”“雷”
+    - derive/ie$/i/ # 模糊“煙”“衣”
+
+    # 中派口音
+    - derive/syu/sy/
+    - derive/zyu/zy/
+    - derive/tsyu/tsy/
+    - derive/tshyu/tshy/
+    - derive/aeh$/ah/ # 多數中派模糊前後ah
+    - derive/ah$/aeh/
+    - derive/aon$/ang/ # 多數中派模糊前後an
+
+    - derive/^zi(?=a)/y/ # 謝謝 zia ya; 好像 hau yan
+    #模糊㗂艚
+    - derive/au$/ao/
+    - derive/eu$/ou/
+    - derive/ong$/on/
+    - derive/ang$/an/
+    - derive/ing$/in/
+    - derive/eng$/en/
+    - derive/^kyiu/cu/
+    - derive/^hyiu/xu/
+    - derive/^khyiu/chu/
+    - derive/^gyiu/ju/
+
+    #模糊別個吳語拼音
+    - derive/oh$/ok/
+    - derive/ah$/ak/
+    - derive/ih$/ik/
+    - derive/eh$/ek/
+    - derive/^ts/tz/
+    - derive/^ku/kw/
+    - derive/^khu/khw/
+    - derive/^gu/gw/
+    - derive/^ngu/ngw/
+    - derive/^hu/hw/
+    - derive/^khyi/chi/
+    - derive/^kyi/ci/
+    - derive/^gyi/ji/
+    - derive/^hyi/shi/
+    - derive/eu$/eo/
+
+    # 簡寫以及更多易錯模糊
+    - derive/^ny(?=[aeou])/ni/
+    - derive/^nyi/ni/
+    - derive/^hyi/x/
+    - derive/^khyi/qi/
+    - derive/^gh/r/
+    - derive/^khyi/ch/
+    - derive/^kyi/c/
+    - derive/^sy/s/
+    - derive/^zy/z/
+    - derive/^tsy/ts/
+    - derive/^tshy/tsh/
+    - derive/ui(?=[nh]$)/u/
+    - derive/^tsh/q/
+
+    - derive/^hyi/hi/
+    - derive/^khyi/khi/
+    - derive/^gyi/gi/
+    - derive/^kyi/ki/
+
+    - derive/^hyiu/hyu/
+    - derive/^khyiu/khyu/
+    - derive/^gyiu/gyu/
+    - derive/^kyiu/kyu/
+
+    #部分清濁音弗分
+    - derive/^i/y/
+    - derive/^i/yi/
+    - derive/^ing/ying/
+    - derive/^u/w/
+    - derive/^u/wu/
+    - derive/^gh//
+   
+
+    # 蘇州口音
+    # - derive/^(ts|z|dz|s|l)i(eu)/$1$2/
+
+    # 兼容吳語學堂
+    - derive/^r$/er/
+    # - abbrev/^nyi(?=[nh]$|$)/gni/
+    # - abbrev/^ny(?=[aeou])/gni/
+    # - derive/ui(nh)$/u/
+    # - derive/h$/q/
+
+translator:
+  dictionary: yahweseh
+  prism: yahweseh
+  spelling_hints: 6
+  comment_format:
+    - xform/\d+//
+
+luna_pinyin:
+  tag: luna_pinyin
+  dictionary: luna_pinyin
+  prefix: "`"
+  suffix: ";"
+  tips: 〔普通話〕
+  preedit_format:
+    - xform/([nl])v/$1ü/
+    - xform/([nl])ue/$1üe/
+    - xform/([jqxy])v/$1u/
+
+yahweseh_reverse_lookup:
+  tags: [luna_pinyin]
+  overwrite_comment: false
+  dictionary: yahweseh
+  comment_format:
+    - xform/\d+//
+
+punctuator:
+  import_preset: symbols
+  full_shape:
+    ":": [：, ；]
+  half_shape:
+    ":": [：, ；]
+
+key_binder:
+  import_preset: default
+
+recognizer:
+  import_preset: default
+  patterns:
+    punct: "^/([0-9]0?|[a-z]+)$"
+    luna_pinyin: "`[a-z]*;?$"
