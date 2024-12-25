@@ -62,6 +62,48 @@ speller:
   algebra:
     - xform/'/;/
     - xform/\d+$//
+    # 轉化羅馬字
+    - xform/æ/ae/
+    - xform/æn/aen/
+    - xform/ö/oe/
+    - xform/ön/oen/
+    - xform/ü/uu/
+    - xform/ô/oo/
+    - xform/pʽ/ph/
+    - xform/tʽ/th/
+    - xform/kʽ/kh/
+    - xform/ʽ/gh/
+    - xform/kyʽ/khy/
+    - xform/kyʽ/kyh/
+    - xform/kwʽ/khw/
+    - xform/kwʽ/kwh/
+    - xform/tsʽ/tsh/
+    - xform/cʽ/ch/
+    - xform/ông/aon/
+    - xform/üih/uih/
+    - xform/üing/uing/
+    - xform/ön/on/
+    - xform/ong/ong/
+    - xform/ông/ongo/
+    - xform/yü/yu/
+    - xform/cü/cu/
+    - xform/cʽü/chu/
+    - xform/jü/ju/
+    - xform/shü/shu/
+    - xform/wong/wông/
+    - xform/m̆/mh/
+    - xform/n̆/nh/
+    - xform/l̆/lh/
+    - xform/n̆g/ngh/
+    - xform/w̆/wh/
+    - xform/kyʽü/khyu/
+    - xform/kyʽü/kyhu/
+    - xform///
+    - xform///
+    - xform///
+    - xform///
+    - xform///
+    - xform///
 
     - abbrev/^([a-z]).+$/$1/
     - abbrev/^(([ptsck]|ts)h).+$/$1/
